@@ -1,4 +1,4 @@
- <?xml version="1.0"?>
+<?xml version="1.0"?>
 <ssuigamefsmspec>
 	<character name="test1" initbm="icon_black" initx="20" inity="20" initw="50" inith="50">
 		<fsm>
