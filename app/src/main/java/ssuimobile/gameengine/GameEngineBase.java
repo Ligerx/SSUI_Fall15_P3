@@ -11,6 +11,9 @@ import java.util.List;
 
 import ssuimobile.gameengine.event.ButtonPressedEvent;
 import ssuimobile.gameengine.event.FSMEvent;
+import ssuimobile.gameengine.event.TouchMoveEvent;
+import ssuimobile.gameengine.event.TouchPressEvent;
+import ssuimobile.gameengine.event.TouchReleaseEvent;
 import ssuimobile.gameengine.event.XYEvent;
 
 public class GameEngineBase extends GameEnginePreBase {
@@ -88,8 +91,7 @@ public class GameEngineBase extends GameEnginePreBase {
 	@Override
 	protected boolean dispatchDirect(int toChar, FSMEvent evt) {
 		GameCharacter character = getCharacterAt(toChar);
-		boolean consumed = character.deliverEvent(evt) ? true : false;
-		return consumed;
+		return character.deliverEvent(evt);
 	}
 	
 	@Override
@@ -122,7 +124,29 @@ public class GameEngineBase extends GameEnginePreBase {
 	
 	@Override 
 	protected boolean dispatchDragFocus(FSMEvent evt) {
-		return false; 
+		GameCharacter character = getCharacterAt(_dragFocus);
+		if(character == null) return false;
+
+		// just adjusted event in case event has an x,y position that needs to be moved
+		FSMEvent adjustedEvent = adjustEventPosition(evt);
+		return character.deliverEvent(adjustedEvent);
+	}
+
+	/**
+	 * If the event is a subclass of XYEvent (has an x,y position),
+	 * adjust the position to be the top left corner of the character instead
+	 * of where the character is being dragged.
+	 */
+	private FSMEvent adjustEventPosition(FSMEvent event) {
+		if(event instanceof XYEvent) {
+			// COPY THE ORIGINAL EVENT and then cast event into XYEvent
+			XYEvent xyEvent = (XYEvent) (event.copy());
+			xyEvent.offset(-_grabPointX, -_grabPointY); // adjust to top left
+
+			return xyEvent; // auto casted back into an FSMEvent
+		}
+
+		return event; // If it's not an XYEvent, just return the original object
 	}
 
 	@Override
@@ -154,22 +178,24 @@ public class GameEngineBase extends GameEnginePreBase {
 		// implemented above, and by instantiating the
 		// appropriate FSMEvent (e.g., TouchReleaseEvent).
 		
-		/*float x = evt.getX();
+		float x = evt.getX();
 		float y = evt.getY();
 
 		if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-
+			TouchPressEvent press = new TouchPressEvent(x, y);
+			return dispatchTryAll(press);
 
 		} else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
-
+			TouchMoveEvent move = new TouchMoveEvent(x, y);
+			return dispatchTryAll(move);
 
 		} else if (evt.getAction() == MotionEvent.ACTION_UP) {
-
+			TouchReleaseEvent release = new TouchReleaseEvent(x, y);
+			return dispatchTryAll(release);
+			
 		} else {
 			// not an event we understand...
 			return false;
-		}*/
-		
-		return false;
+		}
 	}
 }
