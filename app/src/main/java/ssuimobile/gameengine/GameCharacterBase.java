@@ -26,7 +26,6 @@ public class GameCharacterBase extends GameCharacterPreBase {
 				return true;
 			}
 		}
-//		}
 
 		return false;
 	}
