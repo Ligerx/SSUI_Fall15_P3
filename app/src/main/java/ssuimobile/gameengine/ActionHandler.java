@@ -17,6 +17,10 @@ import ssuimobile.gameengine.event.XYEvent;
 public class ActionHandler {
 
     public void handleAction(FSMAction action, GameCharacter character, FSMEvent event) {
+        Log.d("ssui handleAction", "action type num is: " + action.getType());
+        Log.d("ssui handleAction", "action type name is: " + FSMActionType.nameFromIndex(action.getType()));
+
+
         if (action.getType() == FSMActionType.CHANGE_IMAGE) {
             changeImage(character, ((ChangeImageAction) action).getImage());
         }

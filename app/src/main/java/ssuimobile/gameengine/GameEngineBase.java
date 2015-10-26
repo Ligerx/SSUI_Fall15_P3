@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -158,6 +159,8 @@ public class GameEngineBase extends GameEnginePreBase {
 
 	@Override
 	protected void buttonHit(int buttonNum) {
+		Log.d("ssui buttonHit", "in buttonHit. buttonNum is: " + buttonNum);
+
 		ButtonPressedEvent event = new ButtonPressedEvent(buttonNum);
 
 		// loop through all characters
@@ -165,6 +168,7 @@ public class GameEngineBase extends GameEnginePreBase {
 		// check if the state has any matching transition/event matches
 
 		for(GameCharacter character : _characters) {
+			Log.d("ssui buttonHit", "iterating through characters");
 			if(character.deliverEvent(event)) break;
 		}
 	}
