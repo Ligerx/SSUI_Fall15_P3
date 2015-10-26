@@ -1,5 +1,7 @@
 package ssuimobile.gameengine.action;
 
+import android.util.Log;
+
 import java.util.HashMap;
 
 /**
@@ -40,11 +42,14 @@ public class FSMActionType {
 	}
 	
 	public static String nameFromIndex(int indx) {
+		Log.d("ssui FSMActionType", "nameFromIndex is valid? " + isValid(indx));
+
 		if (!isValid(indx)) return null;
 		else return _typeNames[indx];
 	}
 	
 	public static boolean isValid(int indx) {
-		return indx < 0 || indx >= _typeNames.length;
-	} 
+//		return indx < 0 || indx >= _typeNames.length;
+		return indx >= 0 || indx < _typeNames.length;
+	}
 }
