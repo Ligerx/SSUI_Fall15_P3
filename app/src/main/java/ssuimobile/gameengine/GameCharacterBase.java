@@ -34,9 +34,10 @@ public class GameCharacterBase extends GameCharacterPreBase {
 	protected void makeFSMTransition(FSMTransition transition, FSMEvent evt) {
 		FSMAction[] actions = transition.getAction();
 		int targetState = transition.getTargetState();
+		ActionHandler handler = new ActionHandler();
 
 		for(FSMAction action : actions) {
-//			action.
+			handler.handleAction(action, this, evt);
 		}
 
 		// Update the state after running all transition actions
