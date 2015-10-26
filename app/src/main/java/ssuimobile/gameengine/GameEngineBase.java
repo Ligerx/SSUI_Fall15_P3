@@ -87,17 +87,36 @@ public class GameEngineBase extends GameEnginePreBase {
 	
 	@Override
 	protected boolean dispatchDirect(int toChar, FSMEvent evt) {
-		return false;
+		GameCharacter character = getCharacterAt(toChar);
+		boolean consumed = character.deliverEvent(evt) ? true : false;
+		return consumed;
 	}
 	
 	@Override
 	protected boolean dispatchToAll(FSMEvent evt) {
-		return false;
+		return dispatchAllBase(evt, false);
 	}
 	
 	@Override
 	protected boolean dispatchTryAll(FSMEvent evt) {
-		return false;
+		return dispatchAllBase(evt, true);
+	}
+
+	/**
+	 * Common code between dispatchToAll and dispatchTryAll
+	 */
+	private boolean dispatchAllBase(FSMEvent event, boolean stopWhenConsumed) {
+		boolean consumed = false;
+
+		for(GameCharacter character : _characters) {
+			// Only stop dispatch if stopWhenConsumed is true
+			if(character.deliverEvent(event)) {
+				consumed = true;
+				if(stopWhenConsumed) break; //stop
+			}
+		}
+
+		return consumed;
 	}
 	
 	
