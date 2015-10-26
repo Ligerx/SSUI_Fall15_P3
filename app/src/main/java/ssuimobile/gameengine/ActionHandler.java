@@ -50,8 +50,13 @@ public class ActionHandler {
         }
     }
 
+
+
+
+
     private void changeImage(GameCharacter character, Bitmap image) {
         character.setImage(image);
+        redraw(character);
     }
 
     private void moveTo(MoveToAction action, GameCharacter character) {
@@ -61,8 +66,7 @@ public class ActionHandler {
         character.setX(action.getX());
         character.setY(action.getY());
 
-        // TODO how do I redraw the board?
-//        character.getOwner().onDraw();
+        redraw(character);
 
         Log.d("ssui action moveTo", "character new coordinates are ("
                 + character.getX() + ", " + character.getY() + ")");
@@ -71,6 +75,7 @@ public class ActionHandler {
     private void moveInc(MoveIncAction action, GameCharacter character) {
         character.setX(character.getX() + action.getX());
         character.setY(character.getY() + action.getY());
+        redraw(character);
     }
 
     private void followEventPosition(GameCharacter character, FSMEvent event) {
@@ -78,6 +83,7 @@ public class ActionHandler {
         XYEvent xy = (XYEvent) event;
         character.setX(xy.getX());
         character.setY(xy.getY());
+        redraw(character);
     }
 
     private void getDragFocus(GameCharacter character) {
@@ -98,5 +104,13 @@ public class ActionHandler {
 
     private void runAnim(RunAnimAction action, GameCharacter character) {
         character.getOwner().startNewAnimation(action);
+    }
+
+    /**
+     * Convenience method to force the canvas to redraw
+     */
+    private void redraw(GameCharacter character) {
+        Log.d("ssui char/board redraw", "damaging character, redrawing board");
+        character.getOwner().damageCharacter(character.getCharacterIndex());
     }
 }
