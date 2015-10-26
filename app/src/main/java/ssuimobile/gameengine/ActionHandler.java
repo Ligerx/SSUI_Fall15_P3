@@ -55,8 +55,17 @@ public class ActionHandler {
     }
 
     private void moveTo(MoveToAction action, GameCharacter character) {
+        Log.d("ssui action moveTo", "character original coordinates are ("
+                + character.getX() + ", " + character.getY() + ")");
+
         character.setX(action.getX());
         character.setY(action.getY());
+
+        // TODO how do I redraw the board?
+//        character.getOwner().onDraw();
+
+        Log.d("ssui action moveTo", "character new coordinates are ("
+                + character.getX() + ", " + character.getY() + ")");
     }
 
     private void moveInc(MoveIncAction action, GameCharacter character) {
