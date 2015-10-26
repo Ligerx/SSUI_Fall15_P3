@@ -13,12 +13,7 @@ public class GameCharacterBase extends GameCharacterPreBase {
 		// Guard if there are no states
 		if(_FSMStateTable == null || _FSMStateTable.length == 0) return false;
 
-		// Loop through all the states of the FSM
-//		for(int i = 0; i < _FSMStateTable.length; i++) {
-//			FSMState state = _FSMStateTable[i];
-
-//		for(FSMState state : _FSMStateTable) {
-
+		// Use the current state
 		int stateNum = getCurrentState();
 		FSMState state = _FSMStateTable[stateNum];
 

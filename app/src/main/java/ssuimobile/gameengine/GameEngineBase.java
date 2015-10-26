@@ -192,7 +192,7 @@ public class GameEngineBase extends GameEnginePreBase {
 		} else if (evt.getAction() == MotionEvent.ACTION_UP) {
 			TouchReleaseEvent release = new TouchReleaseEvent(x, y);
 			return dispatchTryAll(release);
-			
+
 		} else {
 			// not an event we understand...
 			return false;
