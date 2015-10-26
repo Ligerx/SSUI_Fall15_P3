@@ -1,13 +1,17 @@
 package ssuimobile.gameengine;
 
-import java.util.List;
-
-import ssuimobile.gameengine.event.FSMEvent;
-import ssuimobile.gameengine.event.XYEvent;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ssuimobile.gameengine.event.ButtonPressedEvent;
+import ssuimobile.gameengine.event.FSMEvent;
+import ssuimobile.gameengine.event.XYEvent;
 
 public class GameEngineBase extends GameEnginePreBase {
 
@@ -18,18 +22,67 @@ public class GameEngineBase extends GameEnginePreBase {
 	
 	@Override
 	protected List<GameCharacter> charactersUnder(RectF area) {
-		return null;
+		ArrayList<GameCharacter> charsUnder = new ArrayList<GameCharacter>();
+
+		// iterate through characters backwards (reverse draw order)
+		for(int i = _characters.length - 1; i >= 0; i--) {
+			GameCharacter character = _characters[i];
+
+			if(isOverlapping(area, character)) {
+				charsUnder.add(character);
+			}
+		}
+
+		return charsUnder;
 	}
-	
-	
+
+	/**
+	 * Use RectF's built in intersects() method to test overlap
+	 *
+	 * @param area overlapping area to test
+	 * @param c character
+	 * @return boolean that says if it is or isn't overlapping
+	 */
+	private boolean isOverlapping(RectF area, GameCharacter c) {
+		return area.intersects(c.getX(), c.getY(), c.getW(), c.getH());
+	}
+
+	/**
+	 * This method dispatches to a single point
+	 */
 	@Override
 	protected boolean dispatchPositionally(XYEvent evt) {
-		return false;
+		// this charactersUnder method finds all chars at a certain point
+		List<GameCharacter> characters = charactersUnder(new PointF(evt.getX(), evt.getY()));
+
+		return dispatchPositionallyBase(characters, evt);
 	}
-	
+
+	/**
+	 * This method dispatches to any character overlapping a given rectangle
+	 */
 	@Override
 	protected boolean dispatchPositionally(RectF inArea, FSMEvent evt) {
-		return false;
+		// this charactersUnder method finds all chars overlapping the rect
+		List<GameCharacter> characters = charactersUnder(inArea);
+
+		return dispatchPositionallyBase(characters, evt);
+	}
+
+	/**
+	 * Common code between the two dispatchPositionally methods
+	 */
+	private boolean dispatchPositionallyBase(List<GameCharacter> characters, FSMEvent event) {
+		boolean eventConsumed = false; // if event was consumed by any character
+
+		for(GameCharacter character : characters) {
+			if(character.deliverEvent(event)) {
+				eventConsumed = true; // mark true
+				break; // stop trying to dispatch if consumed
+			}
+		}
+
+		return eventConsumed;
 	}
 	
 	@Override
@@ -55,12 +108,22 @@ public class GameEngineBase extends GameEnginePreBase {
 
 	@Override
 	protected void onDraw(Canvas canv) {
-
+		for(GameCharacter character : _characters) {
+			character.draw(canv);
+		}
 	}
 
 	@Override
 	protected void buttonHit(int buttonNum) {
-		
+		ButtonPressedEvent event = new ButtonPressedEvent(buttonNum);
+
+		// loop through all characters
+		// get current state object
+		// check if the state has any matching transition/event matches
+
+		for(GameCharacter character : _characters) {
+			if(character.deliverEvent(event)) break;
+		}
 	}
 	
 	@Override

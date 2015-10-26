@@ -16,17 +16,22 @@ public class GameCharacterBase extends GameCharacterPreBase {
 		// Loop through all the states of the FSM
 //		for(int i = 0; i < _FSMStateTable.length; i++) {
 //			FSMState state = _FSMStateTable[i];
-		for(FSMState state : _FSMStateTable) {
-			// Look for a transition that takes the event
-			for(int j = 0; j < state._transitions.length; j++) {
-				FSMTransition transition = state.getTransitionAt(j);
-				if(transition.match(event)) {
-					// Call the transition and return true to signify consuming the event
-					makeFSMTransition(transition, event);
-					return true;
-				}
+
+//		for(FSMState state : _FSMStateTable) {
+
+		int stateNum = getCurrentState();
+		FSMState state = _FSMStateTable[stateNum];
+
+		// Look for a transition that takes the event
+		for(int j = 0; j < state._transitions.length; j++) {
+			FSMTransition transition = state.getTransitionAt(j);
+			if(transition.match(event)) {
+				// Call the transition and return true to signify consuming the event
+				makeFSMTransition(transition, event);
+				return true;
 			}
 		}
+//		}
 
 		return false;
 	}
@@ -37,7 +42,7 @@ public class GameCharacterBase extends GameCharacterPreBase {
 		int targetState = transition.getTargetState();
 
 		for(FSMAction action : actions) {
-			action.
+//			action.
 		}
 
 		// Update the state after running all transition actions
