@@ -180,10 +180,12 @@ public class GameEngineBase extends GameEnginePreBase {
 		// get current state object
 		// check if the state has any matching transition/event matches
 
-		for(GameCharacter character : _characters) {
-			Log.d("ssui buttonHit", "iterating through characters");
-			if(character.deliverEvent(event)) break;
-		}
+//		for(GameCharacter character : _characters) {
+//			Log.d("ssui buttonHit", "iterating through characters");
+//			if(character.deliverEvent(event)) break;
+//		}
+
+		dispatchToAll(event);
 	}
 	
 	@Override
