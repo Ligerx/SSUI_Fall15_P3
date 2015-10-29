@@ -34,7 +34,7 @@ public class ActionHandler {
             followEventPosition(character, event);
         }
         else if(action.getType() == FSMActionType.GET_DRAG_FOCUS) {
-            getDragFocus(character);
+            getDragFocus(character, event);
         }
         else if(action.getType() == FSMActionType.DROP_DRAG_FOCUS) {
             dropDragFocus(character);
@@ -73,9 +73,18 @@ public class ActionHandler {
     }
 
     private void moveInc(MoveIncAction action, GameCharacter character) {
+        Log.d("ssui action moveInc", "character original coordinates are ("
+                + character.getX() + ", " + character.getY() + ")");
+
+        Log.d("ssui action moveInc", "incrementing by: ("
+                + action.getX() + ", " + action.getY() + ")");
+
         character.setX(character.getX() + action.getX());
         character.setY(character.getY() + action.getY());
         redraw(character);
+
+        Log.d("ssui action moveInc", "character new coordinates are ("
+                + character.getX() + ", " + character.getY() + ")");
     }
 
     private void followEventPosition(GameCharacter character, FSMEvent event) {
@@ -86,8 +95,36 @@ public class ActionHandler {
         redraw(character);
     }
 
-    private void getDragFocus(GameCharacter character) {
-        character.getOwner()._dragFocus = character.getCharacterIndex();
+    private void getDragFocus(GameCharacter character, FSMEvent event) {
+//        character.getOwner()._dragFocus = character.getCharacterIndex();
+//        int charIndex = character.getCharacterIndex();
+
+        // Assuming that the event is a XYEvent if we're talking about drag
+        // In GameEngineBase dispatchDragFocus, I already
+        // offset the grabPoint before delivering the event.
+//        XYEvent xy = (XYEvent) event;
+
+//        character.getOwner().requestDragFocus(charIndex, xy.getX(), xy.getY());
+//        character.getOwner().requestDragFocus(charIndex, 0, 0);
+
+
+        // FIXME
+        // I THINK what I need to do now is:
+        // Find coordinates of the click, position of the (0,0) of the character
+        // Then calculate the drag offset, and request drag focus
+
+        XYEvent xy = (XYEvent) event;
+
+        int charIndex = character.getCharacterIndex();
+
+        float xOffset = xy.getX() - character.getX();
+        float yOffset = xy.getY() - character.getY();
+
+        character.getOwner().requestDragFocus(charIndex, xOffset, yOffset);
+
+        Log.d("ssui action getDrag", "getDragFocus character position: (" + character.getX() + ", " + character.getY() + ")");
+        Log.d("ssui action getDrag", "getDragFocus event position: (" + xy.getX() + ", " + xy.getY() + ")");
+        Log.d("ssui action getDrag", "getDragFocus xOffset: " + xOffset + ", yOffset: " + yOffset);
     }
 
     private void dropDragFocus(GameCharacter character) {

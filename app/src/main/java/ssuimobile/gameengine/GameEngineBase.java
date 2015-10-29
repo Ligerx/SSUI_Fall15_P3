@@ -37,6 +37,8 @@ public class GameEngineBase extends GameEnginePreBase {
 			}
 		}
 
+		Log.d("ssui GameEngineBase", "charactersUnder # of characters: " + charsUnder.size());
+
 		return charsUnder;
 	}
 
@@ -48,7 +50,11 @@ public class GameEngineBase extends GameEnginePreBase {
 	 * @return boolean that says if it is or isn't overlapping
 	 */
 	private boolean isOverlapping(RectF area, GameCharacter c) {
-		return area.intersects(c.getX(), c.getY(), c.getW(), c.getH());
+		boolean overlapping = area.intersects(c.getX(), c.getY(), c.getW(), c.getH());
+
+		Log.d("ssui GameEngineBase", "isOverlapping: " + overlapping);
+
+		return overlapping;
 	}
 
 	/**
@@ -81,6 +87,8 @@ public class GameEngineBase extends GameEnginePreBase {
 
 		for(GameCharacter character : characters) {
 			if(character.deliverEvent(event)) {
+				Log.d("ssui GameEngineBase", "dispatchPositionallyBase event was consumed by char# " + character.getCharacterIndex());
+
 				eventConsumed = true; // mark true
 				break; // stop trying to dispatch if consumed
 			}
@@ -91,6 +99,8 @@ public class GameEngineBase extends GameEnginePreBase {
 	
 	@Override
 	protected boolean dispatchDirect(int toChar, FSMEvent evt) {
+		Log.d("ssui GameEngineBase", "dispatchDirect to character # " + toChar);
+
 		GameCharacter character = getCharacterAt(toChar);
 		return character.deliverEvent(evt);
 	}
@@ -114,6 +124,7 @@ public class GameEngineBase extends GameEnginePreBase {
 		for(GameCharacter character : _characters) {
 			// Only stop dispatch if stopWhenConsumed is true
 			if(character.deliverEvent(event)) {
+				Log.d("ssui GameEngineBase", "dispatchAllBase event was consumed by char # " + character.getCharacterIndex());
 				consumed = true;
 				if(stopWhenConsumed) break; //stop
 			}
@@ -127,6 +138,8 @@ public class GameEngineBase extends GameEnginePreBase {
 	protected boolean dispatchDragFocus(FSMEvent evt) {
 		GameCharacter character = getCharacterAt(_dragFocus);
 		if(character == null) return false;
+
+		Log.d("ssui GameEngineBase", "dispatchDragFocus delivering to char # " + character.getCharacterIndex());
 
 		// just adjusted event in case event has an x,y position that needs to be moved
 		FSMEvent adjustedEvent = adjustEventPosition(evt);
@@ -186,19 +199,28 @@ public class GameEngineBase extends GameEnginePreBase {
 		float y = evt.getY();
 
 		if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+			Log.d("ssui onTouchEvent press", "TouchPress event at (" + x + ", " + y + ")");
 			TouchPressEvent press = new TouchPressEvent(x, y);
-			return dispatchTryAll(press);
+//			return dispatchTryAll(press);
+			return dispatchToAll(press);
+
 
 		} else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
+			Log.d("ssui onTouchEvent move", "TouchMove event at (" + x + ", " + y + ")");
 			TouchMoveEvent move = new TouchMoveEvent(x, y);
-			return dispatchTryAll(move);
+//			return dispatchTryAll(move);
+			return dispatchToAll(move);
 
 		} else if (evt.getAction() == MotionEvent.ACTION_UP) {
+			Log.d("ssui onTouchEvent up", "TouchRelease event at (" + x + ", " + y + ")");
 			TouchReleaseEvent release = new TouchReleaseEvent(x, y);
-			return dispatchTryAll(release);
+//			return dispatchTryAll(release);
+			return dispatchToAll(release);
+
 
 		} else {
 			// not an event we understand...
+			Log.d("ssui onTouchEvent", "no action matched...");
 			return false;
 		}
 	}
