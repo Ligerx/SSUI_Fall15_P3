@@ -218,6 +218,8 @@ public class GameEngineBase extends GameEnginePreBase {
 //			return dispatchToAll(press);
 			return dispatchPositionally(new TouchPressEvent(x, y));
 
+			// FIXME I really don't understand the requirements for this
+
 		} else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
 			Log.d("ssui onTouchEvent move", "TouchMove event at (" + x + ", " + y + ")");
 
@@ -230,7 +232,8 @@ public class GameEngineBase extends GameEnginePreBase {
 
 			TouchMoveEvent move = new TouchMoveEvent(x, y);
 //			return dispatchTryAll(move);
-			return dispatchToAll(move);
+//			return dispatchToAll(move);
+			return dispatchPositionally(new TouchPressEvent(x, y)); // TODO IS THIS RIGHT? ??????
 
 		} else if (evt.getAction() == MotionEvent.ACTION_UP) {
 			Log.d("ssui onTouchEvent up", "TouchRelease event at (" + x + ", " + y + ")");
@@ -245,7 +248,6 @@ public class GameEngineBase extends GameEnginePreBase {
 			TouchReleaseEvent release = new TouchReleaseEvent(x, y);
 //			return dispatchTryAll(release);
 			return dispatchToAll(release);
-
 
 		} else {
 			// not an event we understand...
