@@ -61,6 +61,9 @@ public class GameCharacterBase extends GameCharacterPreBase {
 	public void draw(Canvas canv) {
 		// by default, getImage has a null value, so this should be safe
 		canv.drawBitmap(getImage(), getX(), getY(), null);
+
+		// The requirements say that the bitmap should stay original size
+		// and that the character width and height should not transform the image.
 	}
 
 

@@ -52,9 +52,16 @@ public class GameEngineBase extends GameEnginePreBase {
 	 * @return boolean that says if it is or isn't overlapping
 	 */
 	private boolean isOverlapping(RectF area, GameCharacter c) {
-		boolean overlapping = area.intersects(c.getX(), c.getY(), c.getW(), c.getH());
+		float right = c.getX() + c.getW();
+		float bottom = c.getY() + c.getH();
 
+		boolean overlapping = area.intersects(c.getX(), c.getY(), right, bottom);
+
+		Log.d("ssui GameEngineBaes", "----- isOverlapping -----");
+		Log.d("ssui GameEngineBaes", "character# " + c.getCharacterIndex());
 		Log.d("ssui GameEngineBase", "isOverlapping: " + overlapping);
+		Log.d("ssui GameEngineBase", "char x " + c.getX() + " - " + right + ", y " + c.getY() + " - " + bottom);
+		Log.d("ssui GameEngineBase", "area x " + area.left + " - " + area.right + ", y " + area.top + " - " + area.bottom);
 
 		return overlapping;
 	}
@@ -208,8 +215,8 @@ public class GameEngineBase extends GameEnginePreBase {
 			Log.d("ssui onTouchEvent press", "TouchPress event at (" + x + ", " + y + ")");
 			TouchPressEvent press = new TouchPressEvent(x, y);
 //			return dispatchTryAll(press);
-			return dispatchToAll(press);
-
+//			return dispatchToAll(press);
+			return dispatchPositionally(new TouchPressEvent(x, y));
 
 		} else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
 			Log.d("ssui onTouchEvent move", "TouchMove event at (" + x + ", " + y + ")");
