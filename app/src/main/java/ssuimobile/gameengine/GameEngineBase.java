@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ssuimobile.gameengine.event.ButtonPressedEvent;
+import ssuimobile.gameengine.event.DragEndEvent;
+import ssuimobile.gameengine.event.DragMoveEvent;
 import ssuimobile.gameengine.event.FSMEvent;
 import ssuimobile.gameengine.event.TouchMoveEvent;
 import ssuimobile.gameengine.event.TouchPressEvent;
@@ -136,6 +138,8 @@ public class GameEngineBase extends GameEnginePreBase {
 	
 	@Override 
 	protected boolean dispatchDragFocus(FSMEvent evt) {
+		Log.d("ssui GameEngineBase", "in dispatchDragFocus");
+
 		GameCharacter character = getCharacterAt(_dragFocus);
 		if(character == null) return false;
 
@@ -209,12 +213,28 @@ public class GameEngineBase extends GameEnginePreBase {
 
 		} else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
 			Log.d("ssui onTouchEvent move", "TouchMove event at (" + x + ", " + y + ")");
+
+			// Also handle drag move here
+			if(_dragFocus != NO_CHARACTER) {
+				Log.d("ssui onTouchEvent move", "Also dragMove event");
+				DragMoveEvent dragMove = new DragMoveEvent(x, y);
+				dispatchDragFocus(dragMove);
+			}
+
 			TouchMoveEvent move = new TouchMoveEvent(x, y);
 //			return dispatchTryAll(move);
 			return dispatchToAll(move);
 
 		} else if (evt.getAction() == MotionEvent.ACTION_UP) {
 			Log.d("ssui onTouchEvent up", "TouchRelease event at (" + x + ", " + y + ")");
+
+			// Also handle drag end here
+			if(_dragFocus != NO_CHARACTER) {
+				Log.d("ssui onTouchEvent up", "Also dragEnd event");
+				DragEndEvent dragEnd = new DragEndEvent(x, y);
+				dispatchDragFocus(dragEnd);
+			}
+
 			TouchReleaseEvent release = new TouchReleaseEvent(x, y);
 //			return dispatchTryAll(release);
 			return dispatchToAll(release);

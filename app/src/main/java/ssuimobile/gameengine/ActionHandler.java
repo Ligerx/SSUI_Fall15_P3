@@ -125,9 +125,11 @@ public class ActionHandler {
         Log.d("ssui action getDrag", "getDragFocus character position: (" + character.getX() + ", " + character.getY() + ")");
         Log.d("ssui action getDrag", "getDragFocus event position: (" + xy.getX() + ", " + xy.getY() + ")");
         Log.d("ssui action getDrag", "getDragFocus xOffset: " + xOffset + ", yOffset: " + yOffset);
+        Log.d("ssui action getDrag", "getDragFocus char # is " + charIndex + ", drag focus is now "+ character.getOwner()._dragFocus);
     }
 
     private void dropDragFocus(GameCharacter character) {
+        Log.d("ssui dropDragFocus", "char # " + character.getCharacterIndex() + " is no longer the drag focus");
         character.getOwner().releaseDragFocus();
     }
 
