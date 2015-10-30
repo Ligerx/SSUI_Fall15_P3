@@ -39,7 +39,7 @@ public class GameEngineBase extends GameEnginePreBase {
 			}
 		}
 
-		Log.d("ssui GameEngineBase", "charactersUnder # of characters: " + charsUnder.size());
+		Log.d("GameEngineBase", "charactersUnder # of characters: " + charsUnder.size());
 
 		return charsUnder;
 	}
@@ -57,11 +57,11 @@ public class GameEngineBase extends GameEnginePreBase {
 
 		boolean overlapping = area.intersects(c.getX(), c.getY(), right, bottom);
 
-		Log.d("ssui GameEngineBaes", "----- isOverlapping -----");
-		Log.d("ssui GameEngineBaes", "character# " + c.getCharacterIndex());
-		Log.d("ssui GameEngineBase", "isOverlapping: " + overlapping);
-		Log.d("ssui GameEngineBase", "char x " + c.getX() + " - " + right + ", y " + c.getY() + " - " + bottom);
-		Log.d("ssui GameEngineBase", "area x " + area.left + " - " + area.right + ", y " + area.top + " - " + area.bottom);
+		Log.d("GameEngineBaes", "----- isOverlapping -----");
+		Log.d("GameEngineBaes", "character# " + c.getCharacterIndex());
+		Log.d("GameEngineBase", "isOverlapping: " + overlapping);
+		Log.d("GameEngineBase", "char x " + c.getX() + " - " + right + ", y " + c.getY() + " - " + bottom);
+		Log.d("GameEngineBase", "area x " + area.left + " - " + area.right + ", y " + area.top + " - " + area.bottom);
 
 		return overlapping;
 	}
@@ -96,7 +96,7 @@ public class GameEngineBase extends GameEnginePreBase {
 
 		for(GameCharacter character : characters) {
 			if(character.deliverEvent(event)) {
-				Log.d("ssui GameEngineBase", "dispatchPositionallyBase event was consumed by char# " + character.getCharacterIndex());
+				Log.d("GameEngineBase", "dispatchPositionallyBase event was consumed by char# " + character.getCharacterIndex());
 
 				eventConsumed = true; // mark true
 				break; // stop trying to dispatch if consumed
@@ -108,7 +108,7 @@ public class GameEngineBase extends GameEnginePreBase {
 	
 	@Override
 	protected boolean dispatchDirect(int toChar, FSMEvent evt) {
-		Log.d("ssui GameEngineBase", "dispatchDirect to character # " + toChar);
+		Log.d("GameEngineBase", "dispatchDirect to character # " + toChar);
 
 		GameCharacter character = getCharacterAt(toChar);
 		return character.deliverEvent(evt);
@@ -133,7 +133,7 @@ public class GameEngineBase extends GameEnginePreBase {
 		for(GameCharacter character : _characters) {
 			// Only stop dispatch if stopWhenConsumed is true
 			if(character.deliverEvent(event)) {
-				Log.d("ssui GameEngineBase", "dispatchAllBase event was consumed by char # " + character.getCharacterIndex());
+				Log.d("GameEngineBase", "dispatchAllBase event was consumed by char # " + character.getCharacterIndex());
 				consumed = true;
 				if(stopWhenConsumed) break; //stop
 			}
@@ -145,12 +145,12 @@ public class GameEngineBase extends GameEnginePreBase {
 	
 	@Override 
 	protected boolean dispatchDragFocus(FSMEvent evt) {
-		Log.d("ssui GameEngineBase", "in dispatchDragFocus");
+		Log.d("GameEngineBase", "in dispatchDragFocus");
 
 		GameCharacter character = getCharacterAt(_dragFocus);
 		if(character == null) return false;
 
-		Log.d("ssui GameEngineBase", "dispatchDragFocus delivering to char # " + character.getCharacterIndex());
+		Log.d("GameEngineBase", "dispatchDragFocus delivering to char # " + character.getCharacterIndex());
 
 		// just adjusted event in case event has an x,y position that needs to be moved
 		FSMEvent adjustedEvent = adjustEventPosition(evt);
@@ -183,7 +183,7 @@ public class GameEngineBase extends GameEnginePreBase {
 
 	@Override
 	protected void buttonHit(int buttonNum) {
-		Log.d("ssui buttonHit", "in buttonHit. buttonNum is: " + buttonNum);
+		Log.d("buttonHit", "in buttonHit. buttonNum is: " + buttonNum);
 
 		ButtonPressedEvent event = new ButtonPressedEvent(buttonNum);
 
@@ -192,7 +192,7 @@ public class GameEngineBase extends GameEnginePreBase {
 		// check if the state has any matching transition/event matches
 
 //		for(GameCharacter character : _characters) {
-//			Log.d("ssui buttonHit", "iterating through characters");
+//			Log.d("buttonHit", "iterating through characters");
 //			if(character.deliverEvent(event)) break;
 //		}
 
@@ -212,7 +212,7 @@ public class GameEngineBase extends GameEnginePreBase {
 		float y = evt.getY();
 
 		if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-			Log.d("ssui onTouchEvent press", "TouchPress event at (" + x + ", " + y + ")");
+			Log.d("onTouchEvent press", "TouchPress event at (" + x + ", " + y + ")");
 			TouchPressEvent press = new TouchPressEvent(x, y);
 //			return dispatchTryAll(press);
 //			return dispatchToAll(press);
@@ -221,11 +221,11 @@ public class GameEngineBase extends GameEnginePreBase {
 			// FIXME I really don't understand the requirements for this
 
 		} else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
-			Log.d("ssui onTouchEvent move", "TouchMove event at (" + x + ", " + y + ")");
+			Log.d("onTouchEvent move", "TouchMove event at (" + x + ", " + y + ")");
 
 			// Also handle drag move here
 			if(_dragFocus != NO_CHARACTER) {
-				Log.d("ssui onTouchEvent move", "Also dragMove event");
+				Log.d("onTouchEvent move", "Also dragMove event");
 				DragMoveEvent dragMove = new DragMoveEvent(x, y);
 				dispatchDragFocus(dragMove);
 			}
@@ -236,11 +236,11 @@ public class GameEngineBase extends GameEnginePreBase {
 			return dispatchPositionally(new TouchPressEvent(x, y)); // TODO IS THIS RIGHT? ??????
 
 		} else if (evt.getAction() == MotionEvent.ACTION_UP) {
-			Log.d("ssui onTouchEvent up", "TouchRelease event at (" + x + ", " + y + ")");
+			Log.d("onTouchEvent up", "TouchRelease event at (" + x + ", " + y + ")");
 
 			// Also handle drag end here
 			if(_dragFocus != NO_CHARACTER) {
-				Log.d("ssui onTouchEvent up", "Also dragEnd event");
+				Log.d("onTouchEvent up", "Also dragEnd event");
 				DragEndEvent dragEnd = new DragEndEvent(x, y);
 				dispatchDragFocus(dragEnd);
 			}
@@ -251,7 +251,7 @@ public class GameEngineBase extends GameEnginePreBase {
 
 		} else {
 			// not an event we understand...
-			Log.d("ssui onTouchEvent", "no action matched...");
+			Log.d("onTouchEvent", "no action matched...");
 			return false;
 		}
 	}

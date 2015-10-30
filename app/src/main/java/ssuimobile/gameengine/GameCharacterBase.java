@@ -11,11 +11,11 @@ public class GameCharacterBase extends GameCharacterPreBase {
 
 	@Override
 	public boolean deliverEvent(FSMEvent event) {
-		Log.d("ssui deliverEvent", "In deliverEvent");
+		Log.d("deliverEvent", "In deliverEvent");
 
 		// Guard if there are no states
 		if(_FSMStateTable == null || _FSMStateTable.length == 0) {
-			Log.d("ssui deliverEvent", "_FSMStateTable was null or empty, so escape");
+			Log.d("deliverEvent", "_FSMStateTable was null or empty, so escape");
 			return false;
 		}
 
@@ -23,14 +23,14 @@ public class GameCharacterBase extends GameCharacterPreBase {
 		int stateNum = getCurrentState();
 		FSMState state = _FSMStateTable[stateNum];
 
-		Log.d("ssui deliverEvent", "current state is: " + stateNum + " - " + state.getName());
+		Log.d("deliverEvent", "current state is: " + stateNum + " - " + state.getName());
 
 		// Look for a transition that takes the event
 		for(int j = 0; j < state._transitions.length; j++) {
 			FSMTransition transition = state.getTransitionAt(j);
 			if(transition.match(event)) {
 				// Call the transition and return true to signify consuming the event
-				Log.d("ssui deliverEvent", "transition matches event");
+				Log.d("deliverEvent", "transition matches event");
 				makeFSMTransition(transition, event);
 				return true;
 			}
@@ -45,11 +45,11 @@ public class GameCharacterBase extends GameCharacterPreBase {
 		int targetState = transition.getTargetState();
 		ActionHandler handler = new ActionHandler();
 
-		Log.d("ssui makeFSMTransition", "--------- Handling " + actions.length + " action(s): Character# "
+		Log.d("makeFSMTransition", "--------- Handling " + actions.length + " action(s): Character# "
 				+ getCharacterIndex() + " ----------------");
 
 		for(FSMAction action : actions) {
-			Log.d("ssui makeFSMTransition", "--- handling an action ---");
+			Log.d("makeFSMTransition", "--- handling an action ---");
 			handler.handleAction(action, this, evt);
 		}
 

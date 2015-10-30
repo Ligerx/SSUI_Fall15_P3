@@ -42,7 +42,7 @@ public class FSMActionType {
 	}
 	
 	public static String nameFromIndex(int indx) {
-		Log.d("ssui FSMActionType", "nameFromIndex is valid? " + isValid(indx));
+		Log.d("FSMActionType", "nameFromIndex is valid? " + isValid(indx));
 
 		if (!isValid(indx)) return null;
 		else return _typeNames[indx];

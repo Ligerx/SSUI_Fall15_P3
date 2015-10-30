@@ -17,8 +17,8 @@ import ssuimobile.gameengine.event.XYEvent;
 public class ActionHandler {
 
     public void handleAction(FSMAction action, GameCharacter character, FSMEvent event) {
-        Log.d("ssui handleAction", "action type num is: " + action.getType());
-        Log.d("ssui handleAction", "action type name is: " + FSMActionType.nameFromIndex(action.getType()));
+        Log.d("handleAction", "action type num is: " + action.getType());
+        Log.d("handleAction", "action type name is: " + FSMActionType.nameFromIndex(action.getType()));
 
 
         if (action.getType() == FSMActionType.CHANGE_IMAGE) {
@@ -60,7 +60,7 @@ public class ActionHandler {
     }
 
     private void moveTo(MoveToAction action, GameCharacter character) {
-        Log.d("ssui action moveTo", "character original coordinates are ("
+        Log.d("action moveTo", "character original coordinates are ("
                 + character.getX() + ", " + character.getY() + ")");
 
         character.setX(action.getX());
@@ -68,22 +68,22 @@ public class ActionHandler {
 
         redraw(character);
 
-        Log.d("ssui action moveTo", "character new coordinates are ("
+        Log.d("action moveTo", "character new coordinates are ("
                 + character.getX() + ", " + character.getY() + ")");
     }
 
     private void moveInc(MoveIncAction action, GameCharacter character) {
-        Log.d("ssui action moveInc", "character original coordinates are ("
+        Log.d("action moveInc", "character original coordinates are ("
                 + character.getX() + ", " + character.getY() + ")");
 
-        Log.d("ssui action moveInc", "incrementing by: ("
+        Log.d("action moveInc", "incrementing by: ("
                 + action.getX() + ", " + action.getY() + ")");
 
         character.setX(character.getX() + action.getX());
         character.setY(character.getY() + action.getY());
         redraw(character);
 
-        Log.d("ssui action moveInc", "character new coordinates are ("
+        Log.d("action moveInc", "character new coordinates are ("
                 + character.getX() + ", " + character.getY() + ")");
     }
 
@@ -122,14 +122,14 @@ public class ActionHandler {
 
         character.getOwner().requestDragFocus(charIndex, xOffset, yOffset);
 
-        Log.d("ssui action getDrag", "getDragFocus character position: (" + character.getX() + ", " + character.getY() + ")");
-        Log.d("ssui action getDrag", "getDragFocus event position: (" + xy.getX() + ", " + xy.getY() + ")");
-        Log.d("ssui action getDrag", "getDragFocus xOffset: " + xOffset + ", yOffset: " + yOffset);
-        Log.d("ssui action getDrag", "getDragFocus char # is " + charIndex + ", drag focus is now "+ character.getOwner()._dragFocus);
+        Log.d("action getDrag", "getDragFocus character position: (" + character.getX() + ", " + character.getY() + ")");
+        Log.d("action getDrag", "getDragFocus event position: (" + xy.getX() + ", " + xy.getY() + ")");
+        Log.d("action getDrag", "getDragFocus xOffset: " + xOffset + ", yOffset: " + yOffset);
+        Log.d("action getDrag", "getDragFocus char # is " + charIndex + ", drag focus is now "+ character.getOwner()._dragFocus);
     }
 
     private void dropDragFocus(GameCharacter character) {
-        Log.d("ssui dropDragFocus", "char # " + character.getCharacterIndex() + " is no longer the drag focus");
+        Log.d("dropDragFocus", "char # " + character.getCharacterIndex() + " is no longer the drag focus");
         character.getOwner().releaseDragFocus();
     }
 
@@ -149,7 +149,7 @@ public class ActionHandler {
      * Convenience method to force the canvas to redraw
      */
     private void redraw(GameCharacter character) {
-        Log.d("ssui char/board redraw", "damaging character, redrawing board");
+        Log.d("char/board redraw", "damaging character, redrawing board");
         character.getOwner().damageCharacter(character.getCharacterIndex());
     }
 }
