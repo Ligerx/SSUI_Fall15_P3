@@ -1,5 +1,18 @@
 package ssuimobile.gameengine;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PointF;
+import android.graphics.RectF;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,17 +25,6 @@ import ssuimobile.gameengine.event.AnimStartEvent;
 import ssuimobile.gameengine.event.FSMEvent;
 import ssuimobile.gameengine.event.MessageEvent;
 import ssuimobile.gameengine.event.XYEvent;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PointF;
-import android.graphics.RectF;
-import android.os.SystemClock;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 /**
  * Abstract class describing the game engine. This implements code for 
@@ -75,7 +77,17 @@ public abstract class GameEnginePreBase extends View {
 	public int numCharacters() {return _characters.length;}
 	
 	public GameCharacter getCharacterAt(int indx) {
-		if (!isCharacter(indx)) return null; else return _characters[indx];
+//		if (!isCharacter(indx)) return null; else return _characters[indx];
+		Log.d("GameEnginePreBase", "getCharacterAt # " + indx);
+		Log.d("GameEnginePreBase", "getCharacterAt isCharacter?" + isCharacter(indx));
+
+		if (!isCharacter(indx)) {
+			return null;
+		}
+		else {
+			return _characters[indx];
+		}
+
 	}
 	
 	/**

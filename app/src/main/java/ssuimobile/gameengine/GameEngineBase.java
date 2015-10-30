@@ -206,11 +206,10 @@ public class GameEngineBase extends GameEnginePreBase {
 		if (evt.getAction() == MotionEvent.ACTION_DOWN) {
 			Log.d("onTouchEvent press", "TouchPress event at (" + x + ", " + y + ")");
 			TouchPressEvent press = new TouchPressEvent(x, y);
+
 //			return dispatchTryAll(press);
 //			return dispatchToAll(press);
 			return dispatchPositionally(new TouchPressEvent(x, y));
-
-			// FIXME I really don't understand the requirements for this
 
 		} else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
 			Log.d("onTouchEvent move", "TouchMove event at (" + x + ", " + y + ")");
@@ -225,7 +224,7 @@ public class GameEngineBase extends GameEnginePreBase {
 			TouchMoveEvent move = new TouchMoveEvent(x, y);
 //			return dispatchTryAll(move);
 //			return dispatchToAll(move);
-			return dispatchPositionally(new TouchPressEvent(x, y)); // TODO IS THIS RIGHT? ??????
+			return dispatchPositionally(move);
 
 		} else if (evt.getAction() == MotionEvent.ACTION_UP) {
 			Log.d("onTouchEvent up", "TouchRelease event at (" + x + ", " + y + ")");
@@ -239,7 +238,7 @@ public class GameEngineBase extends GameEnginePreBase {
 
 			TouchReleaseEvent release = new TouchReleaseEvent(x, y);
 //			return dispatchTryAll(release);
-			return dispatchToAll(release);
+			return dispatchToAll(release); // FIXME Is this right? Should it be TryAll, ToAll, or positionally?
 
 		} else {
 			// not an event we understand...
