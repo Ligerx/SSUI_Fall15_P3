@@ -187,16 +187,8 @@ public class GameEngineBase extends GameEnginePreBase {
 
 		ButtonPressedEvent event = new ButtonPressedEvent(buttonNum);
 
-		// loop through all characters
-		// get current state object
-		// check if the state has any matching transition/event matches
-
-//		for(GameCharacter character : _characters) {
-//			Log.d("buttonHit", "iterating through characters");
-//			if(character.deliverEvent(event)) break;
-//		}
-
-		dispatchToAll(event);
+//		dispatchToAll(event);
+		dispatchTryAll(event);
 	}
 	
 	@Override
