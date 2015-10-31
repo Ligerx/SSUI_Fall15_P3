@@ -111,6 +111,13 @@ public class GameEngineBase extends GameEnginePreBase {
 		Log.d("GameEngineBase", "dispatchDirect to character # " + toChar);
 
 		GameCharacter character = getCharacterAt(toChar);
+
+		// This check is needed in case an animation gets ended early, setting character # to -1
+		if(character == null) {
+			Log.d("GameEngineBase", "dispatchDirect character was null, end dispatch. Possibly end of animation?");
+			return false;
+		}
+
 		return character.deliverEvent(evt);
 	}
 	
